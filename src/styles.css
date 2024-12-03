@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.cf-turnstile {
+  transform: scale(0.8); /* Scale down to 75% of its original size */
+  transform-origin: 0 0; /* Keep the scaling from the top-left corner */
+}
