@@ -59,17 +59,7 @@ function loadPortfolios() {
         (portfolio) => !displayedPortfolios.has(portfolio._id)
       );
 
-      const existingPortfolios = data.data.filter((portfolio) =>
-        displayedPortfolios.has(portfolio._id)
-      );
-
-      existingPortfolios.forEach((portfolio) => {
-        console.error("existing port", portfolio.artist);
-        displayedPortfolios.add(portfolio._id);
-      });
-
       newPortfolios.forEach((portfolio) => {
-        console.log("new port", portfolio.artist);
         displayedPortfolios.add(portfolio._id);
       });
 
