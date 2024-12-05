@@ -59,9 +59,19 @@ function loadPortfolios() {
         (portfolio) => !displayedPortfolios.has(portfolio._id)
       );
 
-      newPortfolios.forEach((portfolio) =>
-        displayedPortfolios.add(portfolio._id)
+      const existingPortfolios = data.data.filter((portfolio) =>
+        displayedPortfolios.has(portfolio._id)
       );
+
+      existingPortfolios.forEach((portfolio) => {
+        console.error("existing port", portfolio.artist);
+        displayedPortfolios.add(portfolio._id);
+      });
+
+      newPortfolios.forEach((portfolio) => {
+        console.log("new port", portfolio.artist);
+        displayedPortfolios.add(portfolio._id);
+      });
 
       displayPortfolios(newPortfolios);
 
@@ -86,16 +96,11 @@ document.getElementById("searchButton").addEventListener("click", () => {
   normalSearch(document.getElementById("searchInput").value);
 });
 document.getElementById("pageTitle").addEventListener("click", () => {
-  window.location.hash = "";
+  seed = Math.random() * 100;
   history.replaceState(null, null, " ");
   document.getElementById("currentTag").classList.add("hidden");
   document.getElementById("searchInput").value = "";
-  portfolioQueue = [];
-  nextToShowIndex = 0; // Tracks the index of the next card to show
-  imageIndex = 0;
-  displayedPortfolios.clear();
-  seed = Math.random() * 100;
-  msnry = initializeMasonry();
+
   changePlaceholder();
   handleRouteChange();
 });
