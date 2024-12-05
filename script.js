@@ -146,7 +146,6 @@ function tagSearch(tag) {
   });
 
   portfolioQueue = [];
-  nextToShowIndex = 0; // Tracks the index of the next card to show
   imageIndex = 0;
 
   displayCurrentTag();
@@ -166,7 +165,6 @@ function normalSearch(searchTerm) {
   }
 
   portfolioQueue = [];
-  nextToShowIndex = 0; // Tracks the index of the next card to show
   imageIndex = 0;
 
   currentPage = 1; // Reset to first page
@@ -191,10 +189,7 @@ function initializeMasonry() {
 
 // Initialize Masonry after the DOM loads
 let msnry;
-let portfolioQueue = [];
-let nextToShowIndex = 0; // Tracks the index of the next card to show
 let imageIndex = 0;
-const IMAGE_LOAD_TIMEOUT = 1000; // 3 seconds fallback
 
 function createPortfolioItem(portfolio, index) {
   const portfolioItem = document.createElement("div");
@@ -224,51 +219,26 @@ function createPortfolioItem(portfolio, index) {
   const img = document.createElement("img");
   img.src = `imgs/${portfolio.imageUrl}`;
   img.alt = `${portfolio.artist}'s portfolio image`;
-  img.classList.add(
-    "h-auto",
-    "max-w-full",
-
-    "opacity-0",
-    "duration-300",
-    "bg-gray-400"
-  );
+  img.classList.add("h-auto", "max-w-full", "opacity-0", "duration-300");
 
   // img.style.width = "500px"; // Fixed width
   img.style.height = "216px"; // Fixed height
   img.style.objectFit = "cover";
 
-  // Fallback timer to show the card if the image doesn't load
-  const timer = setTimeout(() => {
-    // portfolioQueue[index].isLoaded = true; // Mark it as "loaded" due to timeout
-    // nextToShowIndex++;
-    // showNextPortfolioItem(); // Attempt to show the next in order
-  }, IMAGE_LOAD_TIMEOUT);
-
   img.onerror = () => {
     // If the image fails to load, skip to the next item
     portfolioItem.classList.add("hidden");
-    clearTimeout(timer);
-    nextToShowIndex++; // Move to the next item in the queue
     showNextPortfolioItem(); // Attempt to show the next portfolio item
   };
 
   img.onload = () => {
-    if (nextToShowIndex > index) {
-      const figure = portfolioItem.querySelector("figure");
-      figure.classList.remove("animate-pulse");
+    console.log("loaded", index);
+    const figure = portfolioItem.querySelector("figure");
+    figure.classList.remove("animate-pulse");
 
-      img.classList.remove("opacity-0");
-      img.classList.add("opacity-100");
-      void portfolioItem.offsetHeight; // Trigger reflow to enable transition
-      // portfolioItem.classList.remove("opacity-0");
-      portfolioItem.classList.add("opacity-0");
-      portfolioItem.classList.remove("opacity-0");
-      portfolioItem.classList.add("opacity-100");
-    }
-
-    clearTimeout(timer); // Clear the fallback timer if the image loads
-    portfolioQueue[index].isLoaded = true; // Mark this image as loaded
-    showNextPortfolioItem(); // Attempt to show the next portfolio item in order
+    img.classList.remove("opacity-0");
+    img.classList.add("opacity-100");
+    void portfolioItem.offsetHeight; // Trigger reflow to enable transition
 
     if (msnry) {
       msnry.reloadItems();
@@ -284,7 +254,7 @@ function createPortfolioItem(portfolio, index) {
   ];
 
   portfolioItem.innerHTML = `
-    <figure class="bg-gray-100 rounded-lg animate-pulse">
+    <figure class="bg-gray-200 rounded-lg animate-pulse duration-100 transition-opacity">
       <a href="${
         portfolio.websiteUrl
       }" target="_blank" rel="noopener noreferrer"></a>
@@ -328,35 +298,6 @@ function createPortfolioItem(portfolio, index) {
   };
 
   return portfolioItem;
-}
-
-function showNextPortfolioItem() {
-  while (
-    nextToShowIndex < portfolioQueue.length &&
-    portfolioQueue[nextToShowIndex].isLoaded
-  ) {
-    const portfolioItem = portfolioQueue[nextToShowIndex].element;
-    const figure = portfolioItem.querySelector("figure");
-    figure.classList.remove("animate-pulse");
-
-    const img = portfolioItem.querySelector("img"); // Get the image element
-
-    // Ensure the image is visible by removing the 'hidden' class and adding smooth opacity transition
-    img.classList.remove("opacity-0");
-    img.classList.add("opacity-100");
-
-    void portfolioItem.offsetHeight; // Trigger reflow to enable transition
-    portfolioItem.classList.add("opacity-0");
-    portfolioItem.classList.remove("opacity-0");
-    portfolioItem.classList.add("opacity-100");
-
-    if (msnry) {
-      msnry.reloadItems();
-      msnry.layout();
-    }
-
-    nextToShowIndex++; // Move to the next item in the queue
-  }
 }
 
 // Function to display portfolios
@@ -443,7 +384,6 @@ document.addEventListener("DOMContentLoaded", doLoad());
 
 function handleRouteChange() {
   portfolioQueue = [];
-  nextToShowIndex = 0; // Tracks the index of the next card to show
   imageIndex = 0;
   displayedPortfolios.clear();
   const urlParams = new URLSearchParams(window.location.hash.slice(1));
