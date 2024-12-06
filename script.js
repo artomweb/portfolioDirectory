@@ -74,31 +74,6 @@ function loadPortfolios() {
     });
 }
 
-// Add event listener to detect when the user scrolls to the bottom of the page
-window.addEventListener("scroll", () => {
-  // Check if the user has scrolled near the bottom of the page
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-    loadPortfolios(); // Trigger loading more portfolios
-  }
-});
-
-document.getElementById("searchButton").addEventListener("click", () => {
-  normalSearch(document.getElementById("searchInput").value);
-});
-document.getElementById("pageTitle").addEventListener("click", () => {
-  seed = Math.random() * 100;
-  history.replaceState(null, null, " ");
-  document.getElementById("currentTag").classList.add("hidden");
-  document.getElementById("searchInput").value = "";
-
-  changePlaceholder();
-  handleRouteChange();
-});
-document.getElementById("infoButton").addEventListener("click", () => {
-  window.location.hash = "#info"; // Update the hash in the browser
-  showInfoPage();
-});
-
 function showInfoPage() {
   document.getElementById("results").classList.add("hidden");
   document.getElementById("infoSection").classList.remove("hidden");
@@ -122,13 +97,6 @@ function hideInfoPage() {
   // url.searchParams.delete("info");
   // window.history.replaceState({ page: "results" }, "", url);
 }
-
-// Search input event
-document.getElementById("searchInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    normalSearch(e.target.value);
-  }
-});
 
 function tagSearch(tag) {
   // Clear the current portfolio list
@@ -317,13 +285,6 @@ function displayPortfolios(portfolios) {
   });
 }
 
-window.addEventListener("resize", function () {
-  if (msnry) {
-    msnry.reloadItems();
-    msnry.layout();
-  }
-});
-
 // Function to extract the domain from a URL
 function getDomain(url) {
   try {
@@ -378,9 +339,6 @@ function changePlaceholder() {
   inputElement.classList.add("placeholder-opacity-100");
 }
 
-// Call the function to load random portfolios when the page loads
-document.addEventListener("DOMContentLoaded", doLoad());
-
 function handleRouteChange() {
   portfolioQueue = [];
   imageIndex = 0;
@@ -412,10 +370,6 @@ function handleRouteChange() {
     loadPortfolios(); // Load all portfolios if no filters are applied
   }
 }
-
-window.addEventListener("popstate", (event) => {
-  handleRouteChange();
-});
 
 function displayCurrentTag() {
   const urlParams = new URLSearchParams(window.location.hash.slice(1));
@@ -480,3 +434,47 @@ document
       turnstile.reset();
     }
   });
+
+// Call the function to load random portfolios when the page loads
+document.addEventListener("DOMContentLoaded", doLoad());
+
+window.addEventListener("popstate", handleRouteChange);
+
+window.addEventListener("resize", () => {
+  if (msnry) {
+    msnry.reloadItems();
+    msnry.layout();
+  }
+});
+
+// Search input event
+document.getElementById("searchInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    normalSearch(e.target.value);
+  }
+});
+
+// Add event listener to detect when the user scrolls to the bottom of the page
+window.addEventListener("scroll", () => {
+  // Check if the user has scrolled near the bottom of the page
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+    loadPortfolios(); // Trigger loading more portfolios
+  }
+});
+
+document.getElementById("searchButton").addEventListener("click", () => {
+  normalSearch(document.getElementById("searchInput").value);
+});
+document.getElementById("pageTitle").addEventListener("click", () => {
+  seed = Math.random() * 100;
+  history.replaceState(null, null, " ");
+  document.getElementById("currentTag").classList.add("hidden");
+  document.getElementById("searchInput").value = "";
+
+  changePlaceholder();
+  handleRouteChange();
+});
+document.getElementById("infoButton").addEventListener("click", () => {
+  window.location.hash = "#info"; // Update the hash in the browser
+  showInfoPage();
+});
