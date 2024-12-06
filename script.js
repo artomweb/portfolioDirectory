@@ -232,7 +232,6 @@ function createPortfolioItem(portfolio, index) {
   };
 
   img.onload = () => {
-    console.log("loaded", index);
     const figure = portfolioItem.querySelector("figure");
     figure.classList.remove("animate-pulse");
 
