@@ -196,6 +196,10 @@ function createPortfolioItem(portfolio, index) {
   img.onerror = () => {
     // If the image fails to load, skip to the next item
     portfolioItem.classList.add("hidden");
+    if (msnry) {
+      msnry.reloadItems();
+      msnry.layout();
+    }
   };
 
   img.onload = () => {
