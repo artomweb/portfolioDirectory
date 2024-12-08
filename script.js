@@ -152,6 +152,7 @@ function initializeMasonry() {
     gutter: 16, // Optional gap between items
     fitWidth: true,
     transitionDuration: 0,
+    columnWidth: ".card:not(.hidden)",
   });
 }
 
