@@ -196,7 +196,6 @@ function createPortfolioItem(portfolio, index) {
   img.onerror = () => {
     // If the image fails to load, skip to the next item
     portfolioItem.classList.add("hidden");
-    showNextPortfolioItem(); // Attempt to show the next portfolio item
   };
 
   img.onload = () => {
