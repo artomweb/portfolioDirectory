@@ -240,7 +240,7 @@ function createPortfolioItem(portfolio, index) {
       <div class="flex justify-center card-actions">
         <a href="${
           portfolio.websiteUrl
-        }" class="link truncate block w-full text-center mb-3">
+        }" target="_blank" class="link truncate block w-full text-center mb-3">
           ${getDomain(portfolio.websiteUrl)}
         </a>
         <div class="flex gap-3 flex-wrap justify-center">
