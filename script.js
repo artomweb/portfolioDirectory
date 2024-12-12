@@ -190,8 +190,8 @@ function createPortfolioItem(portfolio, index) {
   img.alt = `${portfolio.artist}'s portfolio image`;
   img.classList.add("h-auto", "max-w-full", "opacity-0", "duration-300");
 
-  // img.style.height = "288px"; // Fixed height
-  img.style.width = "512px"; // Fixed width
+  img.style.height = "216px"; // Fixed height
+  // img.style.width = "512px"; // Fixed width
   img.style.objectFit = "cover";
 
   img.onerror = () => {
