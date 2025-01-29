@@ -30,4 +30,4 @@ jobs:
           MONGO_USER: ${{ secrets.MONGO_USER }}
           MONGO_PASS: ${{ secrets.MONGO_PASS }}
         run: |
-          node checkImages.js
+          node imagesExist.js
