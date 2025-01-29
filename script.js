@@ -6,7 +6,7 @@ const apiUrl =
 let currentPage = 1;
 let totalPages = 1;
 let isLoading = false; // Prevent multiple simultaneous loads
-let seed = Math.random() * 100;
+let seed = Math.floor(Math.random() * 5) + 1;
 let displayedPortfolios = new Set();
 
 function loadPortfolios() {
@@ -34,7 +34,6 @@ function loadPortfolios() {
     page: currentPage,
     limit: 8,
     seed,
-    random: true,
     ...params,
   }).toString();
 
@@ -58,6 +57,15 @@ function loadPortfolios() {
       const newPortfolios = data.data.filter(
         (portfolio) => !displayedPortfolios.has(portfolio._id)
       );
+
+      console.log(data);
+
+      data.data.forEach((portfolio) => {
+        if (displayedPortfolios.has(portfolio._id)) {
+          console.error("Duplicate portfolio given", portfolio);
+        }
+        return portfolio;
+      });
 
       newPortfolios.forEach((portfolio) => {
         displayedPortfolios.add(portfolio._id);
@@ -470,7 +478,7 @@ document.getElementById("searchButton").addEventListener("click", () => {
   normalSearch(document.getElementById("searchInput").value);
 });
 document.getElementById("pageTitle").addEventListener("click", () => {
-  seed = Math.random() * 100;
+  seed = (seed + 1) % 5;
   history.replaceState(null, null, " ");
   document.getElementById("currentTag").classList.add("hidden");
   document.getElementById("searchInput").value = "";
