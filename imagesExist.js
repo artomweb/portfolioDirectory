@@ -38,7 +38,7 @@ const portfolioSchema = new mongoose.Schema(
 const Portfolio = mongoose.model("Portfolio", portfolioSchema);
 
 // Folder where images are stored
-const IMAGES_FOLDER = path.resolve(__dirname, "..", "frontEnd", "imgs");
+const IMAGES_FOLDER = path.resolve(__dirname, "imgs");
 
 // Function to check if portfolio images exist
 async function checkImages() {
@@ -66,6 +66,9 @@ async function checkImages() {
         missingCount > 0 ? `${missingCount} missing` : "none missing"
       }.`
     );
+    if (missingCount) {
+      process.exit(1);
+    }
   } catch (error) {
     console.error("Error checking images:", error);
     process.exit(1); // Fail the script if there's an error
